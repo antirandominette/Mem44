@@ -2,6 +2,8 @@ import "./Home.css"
 import Header from "../../Components/Header/Header";
 
 function Home() {
+
+
     return (
         <section className="home_section">
             <Header />

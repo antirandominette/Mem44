@@ -11,7 +11,7 @@ exports.signup = (req, res) => {
 			password: hash
 		});
 
-		user.save().then(() => res.status(201).json({ message: "User successfully created !" })).catch(error => res.status(400).json({ error }));
+		user.save().then(() => res.status(201).json({ message: "User successfully created !" })).catch(error => res.status(400).json({ message: "User already exists !" }));
 	}
 
 	bcrypt.hash(req.body.password, 10).then(hash => validator.isEmail(req.body.email) ? createNewUser(hash) : res.status(400).json({ message: "Email not valid !" })).catch(error => res.status(500).json({ error }));

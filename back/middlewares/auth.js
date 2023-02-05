@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 
 
 module.exports = (req, res, next) => { // Check if the user is authenticated
+    console.log(req.headers.authorization)
     try { 
         const token = req.headers.authorization.split(' ')[1]; // Split the token from the authorization header [Bearer, token] and extract the token [1]
         const decodedToken = jwt.verify(token, `${env.SECRET_TOKEN}`); // Decode the token with the SECRET_TOKEN

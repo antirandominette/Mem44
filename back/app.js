@@ -5,14 +5,15 @@ const mongoose = require('mongoose'); // Mongoose is a MongoDB object modeling t
 const path = require('path');
 const helmet = require("helmet"); // Helmet helps you secure your Express apps from various well-known web vulnerabilities by setting HTTP headers appropriately.
 const rateLimit = require("express-rate-limit"); // Express rate limit is a middleware that can be used to limit repeated requests to public APIs and/or endpoints such as password reset.
-const userRoute = require('./routes/userRoute');
+const userRoutes = require('./routes/userRoutes');
+const forumPostRoutes = require('./routes/forumPostsRoutes');
 
 
 const app = express();
 const env = process.env;
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 100,
+    max: 400,
     standardHeaders: true,
     legacyHeaders: true,
     message: "Too many requests, try again later"
@@ -37,16 +38,15 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/forum", (req, res) => {
+app.get("/", (req, res) => {
 	console.log("Hello");
 	res.json({ message: "Hello World!"});
 });
 
-// app.get("/signup", (req, res) => {
-// 	res.json({ message: "Hello werg" })
-// })
 
-app.use('/auth', authLimiter, userRoute);
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/api/auth', authLimiter, userRoutes);
+app.use('/api/posts', authLimiter, forumPostRoutes);
 
 module.exports = app;
 

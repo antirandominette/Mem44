@@ -1,19 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function SignUp() {
-    const [ res, setRes ] = useState([]);
+    const [ result, setResult ] = useState([]);
     
-    const fetchData = () => {
-        return fetch('http://13.37.164.181:4200/signup')
-            .then(res => res.json())
-            .then(res => setRes(res))
-            .catch(err => console.log(err))
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, [])
-
     function handleSubmit(e) {
         e.preventDefault();
         const email = document.getElementById('email').value;
@@ -24,7 +13,7 @@ function SignUp() {
             password
         }
 
-        fetch('http://13.37.164.181:4200/auth/signup', {
+        fetch('http://13.37.164.181:4200/api/signup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -32,13 +21,13 @@ function SignUp() {
             body: JSON.stringify(data)
         })
         .then(res => res.json())
-        .then(res => console.log(res))
+        .then(res => setResult(res))
         .catch(err => console.log(err))
     }
 
     return (
         <div className="SignUp">
-            <h1>{ res.message }</h1>
+            <h1>{ result.message }</h1>
             <form onSubmit={ handleSubmit }>
                 <label htmlFor="email">Email</label>
                 <input type="email" name="email" id="email" />
