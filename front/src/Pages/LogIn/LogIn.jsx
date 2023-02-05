@@ -1,7 +1,9 @@
-import { useNavigate  } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../Components/Header/Header';
 
 function LogIn() {
     const navigate = useNavigate();
+    const isConnected = false;
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -18,13 +20,16 @@ function LogIn() {
         })
             .then(res => res.json())
             .then(res => {
-                navigate('/forum', { state: { token: res.token }});
+                sessionStorage.setItem('token', res.token);
+                isConnected ? sessionStorage.setItem('isConnected', false) : sessionStorage.setItem('isConnected', true);
+                navigate('/forum');
             })
             .catch(err => console.log(err));
     }
 
     return (
         <div className="login">
+            <Header />
             <div className="login__container">
                 <h1>Sign in</h1>
                 <form onSubmit={ handleSubmit }>
