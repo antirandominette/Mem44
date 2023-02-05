@@ -30,6 +30,7 @@ function LogIn() {
     return (
         <div className="login">
             <Header />
+            
             <div className="login__container">
                 <h1>Sign in</h1>
                 <form onSubmit={ handleSubmit }>

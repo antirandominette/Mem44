@@ -56,7 +56,6 @@ exports.modifyPost = (req, res) => {
     }
 };
 
-
 exports.getAllPosts = (req, res) => {
     Post.find()
         .then(posts => res.status(200).json(posts))
