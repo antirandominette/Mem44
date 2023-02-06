@@ -9,6 +9,7 @@ import Community from './Pages/Community/Community';
 import Error404 from './Pages/Error404/Error404';
 import SignUp from './Pages/SignUp/SignUp';
 import LogIn from './Pages/LogIn/LogIn';
+import Post from './Pages/Post/Post';
 
 const root = document.getElementById('root');
 
@@ -18,6 +19,7 @@ createRoot(root).render(
       <Routes>
         <Route path="/" element={ <Home /> } />
         <Route path="/forum" element={ <Forum /> } />
+        <Route path="/forum/post/:id" element={ <Post /> } />
         <Route path="/forum/create-post" element={ <CreatePost /> } />
         <Route path="/community" element={ <Community /> } />
         <Route path="/signup" element={ <SignUp /> } />
