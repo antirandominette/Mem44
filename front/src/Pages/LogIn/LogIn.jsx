@@ -21,6 +21,7 @@ function LogIn() {
             .then(res => res.json())
             .then(res => {
                 sessionStorage.setItem('token', res.token);
+                sessionStorage.setItem('userId', res.userId);
                 isConnected ? sessionStorage.setItem('isConnected', false) : sessionStorage.setItem('isConnected', true);
                 navigate('/forum');
             })

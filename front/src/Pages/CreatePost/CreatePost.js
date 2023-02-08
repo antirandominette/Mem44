@@ -9,25 +9,26 @@ function CreatePost() {
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         const resume = document.getElementById('resume').value;
-        const image = document.getElementById('image').value;
-        const userId = "ergq"
+        const duration = document.getElementById('duration').value;
+        const userId = sessionStorage.getItem('userId');
 
         const data = {
             post: {
                 title,
                 description,
                 resume,
-                image,
-                userId
+                duration,
+                userId,
             }
         }
 
         fetch('http://13.37.164.181:4200/api/posts/',{
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + sessionStorage.getItem('token')
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         })
         .then(res => res.json())
         .then(res => setResult(res))
@@ -41,13 +42,19 @@ function CreatePost() {
                 <input id="title" type="text" name="title" placeholder="Title" />
                 <input id="description" type="text" name="description" placeholder="Description" />
                 <input id="resume" type="text" name="resume" placeholder="Resume" />
-                <input id="image" type="file" name="image" />
+                <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
+                
                 <button type="submit">Create Post</button>
             </form>
 
             { 
                 result && <>
                     <h1>{ result.message }</h1>
+                    <h2>{ result.title }</h2>
+                    <h2>{ result.description }</h2>
+                    <h2>{ result.resume }</h2>
+                    <h2>{ result.userId }</h2>
+                    <img src={ result.image } alt="post" />
                 </>
             }
         </div>

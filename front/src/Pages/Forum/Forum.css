@@ -19,6 +19,31 @@
     font-family: 'Special Elite', cursive;
 }
 
+.forum_section_create_post_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 10%;
+    height: 5%;
+
+    margin: 0 0 5% 0;
+    padding: 0;
+
+    text-decoration: none;
+    color: var(--primary-color);
+    background: var(--secondary-color);
+    border-radius: 15px;
+}
+.forum_section_create_post_button:hover {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+}
+.forum_section_create_post_button:active {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+
 .forum_post_container {
     position: relative;
     display: flex;
