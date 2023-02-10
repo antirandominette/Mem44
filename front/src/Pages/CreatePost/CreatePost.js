@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../../Components/Header/Header';
+import './CreatePost.css';
 
 function CreatePost() {
     const [result, setResult] = useState();
+    const [postDescriptionLength, setPostDescriptionLength] = useState();
+    const navigate = useNavigate();
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -31,16 +36,29 @@ function CreatePost() {
             body: JSON.stringify(data),
         })
         .then(res => res.json())
-        .then(res => setResult(res))
+        .then(res => {
+            setResult(res);
+            console.log(res)
+            navigate(`/forum/post/${ res.postId }`);
+        })
         .catch(err => console.log(err))
+    }
+
+    function handleChange(e) {
+        const postDescription = e.target.value;
+        setPostDescriptionLength(postDescription.length);
     }
 
     return (
         <div className="create-post">
+            <Header />
             <h1>Create Post</h1>
-            <form onSubmit={ handleSubmit }>
+            <form className='create-post-form' onSubmit={ handleSubmit }>
                 <input id="title" type="text" name="title" placeholder="Title" />
-                <input id="description" type="text" name="description" placeholder="Description" />
+                <textarea id="description" type="text" name="description" placeholder="Description" onChange={ handleChange } maxLength={ 5000 } />
+                {
+                    postDescriptionLength > 0 && <p>{ postDescriptionLength } / 5000</p>
+                }
                 <input id="resume" type="text" name="resume" placeholder="Resume" />
                 <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
                 

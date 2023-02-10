@@ -1,5 +1,5 @@
 .header_container {
-    height: 60px;
+    height: 100px;
 
     display: flex;
     align-items: center;
@@ -11,7 +11,7 @@
     background-color: #4d6051;
 }
 
-.header_logo {
+.header_logo_container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -23,9 +23,10 @@
     font-weight: 500;
     color: #000;
 }
-.header_logo.active {
+.header_logo_container.active {
     border: none;
 }
+
 
 .header_nav {
     display: flex;

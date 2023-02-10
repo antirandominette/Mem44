@@ -38,15 +38,16 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/", (req, res) => {
-	console.log("Hello");
-	res.json({ message: "Hello World!"});
-});
-
-
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', authLimiter, userRoutes);
 app.use('/api/posts', authLimiter, forumPostRoutes);
 
-module.exports = app;
+app.get('/images', (req, res) => {
+    res.status(200).json({
+        message: 'Images fetched successfully'
+    });
 
+    console.log(__dirname);
+});
+
+module.exports = app;

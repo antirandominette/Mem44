@@ -46,24 +46,24 @@ function Forum() {
     return (
         <section className="forum_section_container">
             <Header />
-            <h2 className="forum_section_title">Forum</h2>
-            <button className="forum_section_create_post_button" onClick={ handleCreatePost }>Create a post</button>
+            <h2 className="forum_section_title">Campaigns</h2>
             {
                     posts.length > 0 ? (
                     posts.map(post => (
                         <div key={post._id} className="forum_post_container">
                             <NavLink  className="forum_post_content" to={ `/forum/post/${post._id}` }>
                                 <div className="flexRow">
-                                    <h2 className="forum_post_title">{post.title}</h2>
-                                    <p className="forum_post_duration">Campaign {post.duration} weeks</p>
+                                    <h2 className="forum_post_title">{ post.title }</h2>
+                                    <p className="forum_post_duration">Campaign { post.duration } weeks</p>
                                 </div>
 
-                                <p className="forum_post_resume">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae repellendus voluptatem deleniti ipsam, sunt consequuntur amet quo officiis maiores enim, maxime delectus! Quisquam tempore quae nulla dolorum aut. Repellat ut quisquam placeat voluptatum dolorum. Nisi repellat voluptatibus vero dignissimos hic.</p>
+                                <p className="forum_post_resume">{ post.resume }</p>
                             </NavLink>
 
                             <div className="forum_post_votes_container">
-                                <p>{ post.likes }</p>
-                                <p>{ post.dislikes }</p>
+                                {
+                                    <p className="forum_post_votes">{ post.likes - post.dislikes }</p>
+                                }
                             </div>
                         </div>
                     ))
@@ -71,6 +71,7 @@ function Forum() {
                     <p>No posts available</p>
                 )
             }
+            <button className="forum_section_create_post_button" onClick={ handleCreatePost }>Create a post</button>
         </section>
     );
 }

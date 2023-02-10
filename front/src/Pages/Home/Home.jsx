@@ -1,5 +1,6 @@
 import "./Home.css"
 import Header from "../../Components/Header/Header";
+import { ReactComponent as Logo } from "../../Assets/logo.svg";
 
 function Home() {
 
@@ -8,6 +9,8 @@ function Home() {
         <section className="home_section">
             <Header />
             <div className="upper_content">
+                <Logo />
+
                 <h1 className="upper_content_title">Website_Name</h1>
 
                 <p className="upper_content_description">

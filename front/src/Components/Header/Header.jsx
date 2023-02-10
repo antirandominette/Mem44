@@ -6,7 +6,9 @@ function Header() {
 
     return (
         <header className="header_container">
-            <NavLink className="header_logo" to="/">Website_Logo</NavLink>
+            <NavLink className="header_logo_container" to="/">
+                Website_Logo
+            </NavLink>
             <nav className="header_nav">
                 {
                     isConnected && 
