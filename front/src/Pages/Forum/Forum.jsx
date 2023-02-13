@@ -51,8 +51,8 @@ function Forum() {
                     posts.length > 0 ? (
                         posts.sort((a, b) => (a.likes - a.dislikes) < (b.likes - b.dislikes) ? 1 : -1).map(
                             post => (
-                                <>
-                                    <div key={post._id} className="forum_post_container">
+                                <div key={post._id} className="forum_posts_container">
+                                    <div className="forum_post_container">
                                         <NavLink  className="forum_post_content" to={ `/forum/post/${post._id}` }>
                                             <div className="flexRow">
                                                 <h2 className="forum_post_title">{ post.title }</h2>
@@ -61,16 +61,16 @@ function Forum() {
 
                                             <p className="forum_post_resume">{ post.resume }</p>
                                         </NavLink>
-                                        
-                                        <div className="forum_post_votes_container">
-                                            <svg className="vote_arrow upvote" fill="#000000" width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
+                                    </div>
+
+                                    <div className="forum_post_votes_container">
+                                            <svg className="vote_arrow upvote" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
                                             {
                                                 <p className="forum_post_votes">{ post.likes - post.dislikes }</p>
                                             }
-                                            <svg className="vote_arrow downvote" fill="#000000" width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
-                                        </div>
+                                            <svg className="vote_arrow downvote" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
                                     </div>
-                                </>
+                                </div>
                             )
                         )
                 ) : (

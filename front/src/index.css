@@ -21,3 +21,10 @@ code {
   --primary-color: #435245;
   --secondary-color: #acb5a1;
 }
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
