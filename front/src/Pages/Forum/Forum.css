@@ -144,3 +144,7 @@
     cursor: pointer;
     fill: crimson;
 }
+
+.upvoted {
+    fill: green;
+}
