@@ -16,3 +16,8 @@ code {
   font-family: 'Special Elite', cursive;
   font-family: 'Ubuntu', sans-serif; 
 */
+
+:root {
+  --primary-color: #435245;
+  --secondary-color: #acb5a1;
+}

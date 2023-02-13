@@ -62,7 +62,7 @@ function CreatePost() {
                 <input id="resume" type="text" name="resume" placeholder="Resume" />
                 <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
                 
-                <button type="submit">Create Post</button>
+                <button className='createPostBtn' type="submit">Create Post</button>
             </form>
 
             { 

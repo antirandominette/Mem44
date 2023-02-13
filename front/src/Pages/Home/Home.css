@@ -20,9 +20,6 @@
 
     transform: scale(2);
 }
-.upper_content svg path {
-    fill: #435245;
-}
 
 .upper_content_title {
     font-size: 4rem;

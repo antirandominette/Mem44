@@ -49,24 +49,30 @@ function Forum() {
             <h2 className="forum_section_title">Campaigns</h2>
             {
                     posts.length > 0 ? (
-                    posts.map(post => (
-                        <div key={post._id} className="forum_post_container">
-                            <NavLink  className="forum_post_content" to={ `/forum/post/${post._id}` }>
-                                <div className="flexRow">
-                                    <h2 className="forum_post_title">{ post.title }</h2>
-                                    <p className="forum_post_duration">Campaign { post.duration } weeks</p>
-                                </div>
+                        posts.sort((a, b) => (a.likes - a.dislikes) < (b.likes - b.dislikes) ? 1 : -1).map(
+                            post => (
+                                <>
+                                    <div key={post._id} className="forum_post_container">
+                                        <NavLink  className="forum_post_content" to={ `/forum/post/${post._id}` }>
+                                            <div className="flexRow">
+                                                <h2 className="forum_post_title">{ post.title }</h2>
+                                                <p className="forum_post_duration">Campaign { post.duration } weeks</p>
+                                            </div>
 
-                                <p className="forum_post_resume">{ post.resume }</p>
-                            </NavLink>
-
-                            <div className="forum_post_votes_container">
-                                {
-                                    <p className="forum_post_votes">{ post.likes - post.dislikes }</p>
-                                }
-                            </div>
-                        </div>
-                    ))
+                                            <p className="forum_post_resume">{ post.resume }</p>
+                                        </NavLink>
+                                        
+                                        <div className="forum_post_votes_container">
+                                            <svg className="vote_arrow upvote" fill="#000000" width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
+                                            {
+                                                <p className="forum_post_votes">{ post.likes - post.dislikes }</p>
+                                            }
+                                            <svg className="vote_arrow downvote" fill="#000000" width="40px" height="40px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        )
                 ) : (
                     <p>No posts available</p>
                 )

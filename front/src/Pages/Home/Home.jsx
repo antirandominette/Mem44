@@ -1,9 +1,20 @@
 import "./Home.css"
 import Header from "../../Components/Header/Header";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
+import { useEffect } from "react";
 
 function Home() {
+    
 
+    useEffect(() => {
+        const logoRedPaths = document.querySelectorAll("path");
+
+        logoRedPaths.forEach((path) => {
+            if (path.getAttribute("fill") === "#ffffff") {
+                path.style.fill = "#9aa6a7";
+            }
+        });
+    }, []);
 
     return (
         <section className="home_section">

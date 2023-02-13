@@ -15,7 +15,86 @@
     background-color: var(--primary-color);
     margin: 2%;
 
-    width: 95%;
+    width: 80%;
     max-height: fit-content;
     border-radius: 10px;
+}
+
+#title {
+    align-self: flex-start;
+    width: 20%;
+    height: 20px;
+    border-radius: 10px;
+    border: solid 1px var(--secondary-color);
+    padding: 10px;
+    margin: 2% 0  1% 4.28%;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+
+#description {
+    align-self: center;
+    width: 90%;
+    max-width: 90%;
+    height: 200px;
+    border-radius: 10px;
+    border: solid 1px var(--secondary-color);
+    padding: 10px;
+    margin: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+
+#resume {
+    align-self: center;
+    width: 90%;
+    max-width: 90%;
+    height: 20px;
+    border-radius: 10px;
+    border: solid 1px var(--secondary-color);
+    padding: 10px;
+    margin: 10px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+
+#duration {
+    align-self: flex-start;
+    width: 15%;
+    max-width: 15%;
+    height: 20px;
+    border-radius: 10px;
+    border: solid 1px var(--secondary-color);
+    padding: 10px;
+    margin: 1% 4.28%;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+
+.createPostBtn {
+    align-self: center;
+    width: 20%;
+    max-width: 20%;
+    height: 40px;
+    border-radius: 10px;
+    border: solid 1px var(--secondary-color);
+    padding: 10px;
+    margin: 0 0 2% 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+.createPostBtn:hover {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    cursor: pointer;
 }
