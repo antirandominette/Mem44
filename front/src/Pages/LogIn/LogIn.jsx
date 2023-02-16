@@ -20,9 +20,9 @@ function LogIn() {
         })
             .then(res => res.json())
             .then(res => {
-                sessionStorage.setItem('token', res.token);
-                sessionStorage.setItem('userId', res.userId);
-                isConnected ? sessionStorage.setItem('isConnected', false) : sessionStorage.setItem('isConnected', true);
+                localStorage.setItem('token', res.token);
+                localStorage.setItem('userId', res.userId);
+                isConnected ? localStorage.setItem('isConnected', false) : localStorage.setItem('isConnected', true);
                 navigate('/forum');
             })
             .catch(err => console.log(err));

@@ -13,7 +13,7 @@ const app = express();
 const env = process.env;
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 500,
+    max: 15400,
     standardHeaders: true,
     legacyHeaders: true,
     message: "Too many requests, try again later"

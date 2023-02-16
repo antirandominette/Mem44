@@ -15,7 +15,7 @@ function CreatePost() {
         const description = document.getElementById('description').value;
         const resume = document.getElementById('resume').value;
         const duration = document.getElementById('duration').value;
-        const userId = sessionStorage.getItem('userId');
+        const userId = localStorage.getItem('userId');
 
         const data = {
             post: {
@@ -31,7 +31,7 @@ function CreatePost() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + sessionStorage.getItem('token')
+                'authorization': 'Bearer ' + localStorage.getItem('token')
             },
             body: JSON.stringify(data),
         })

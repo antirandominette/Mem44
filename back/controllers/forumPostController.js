@@ -87,45 +87,47 @@ exports.deletePost = (req, res) => {
 };
 
 exports.likePost = (req, res) => {
-    const like = req.body.like;
+    const vote = req.body.vote;
     const userId = req.auth.userId;
     const postId = req.params.id;
 
+    console.table({ vote, userId, postId });
+
     function addLike() {
-        Post.updateOne({ _id: postId }, { $inc: { likes: 1 }, $push: { usersLiked: userId } })
-            .then(() => res.status(200).json({ message: 'Post liked successfully !' }))
-            .catch(error => res.status(400).json({ message: 'Post like failed !' }));
+        Post.updateOne({ _id: postId }, { $inc: { upvotes: 1 }, $push: { usersUpvoted: userId } })
+            .then(() => res.status(200).json({ message: 'Post upvoted successfully !' }))
+            .catch(error => res.status(400).json({ message: 'Post vote failed !' }));
     }
 
     function removeLike() {
-        Post.updateOne({ _id: postId }, { $inc: { likes: -1 }, $pull: { usersLiked: userId } })
-            .then(() => res.status(200).json({ message: 'Post unliked successfully !' }))
+        Post.updateOne({ _id: postId }, { $inc: { upvotes: -1 }, $pull: { usersUpvoted: userId } })
+            .then(() => res.status(200).json({ message: 'Removed upvote successfully !' }))
             .catch(error => res.status(400).json({ message: 'Post unlike failed !' }));
     }
 
     function addDislike() {
-        Post.updateOne({ _id: postId }, { $inc: { dislikes: 1 }, $push: { usersDisliked: userId } })
-            .then(() => res.status(200).json({ message: 'Post disliked successfully !' }))
+        Post.updateOne({ _id: postId }, { $inc: { downvotes: 1 }, $push: { usersDownvoted: userId } })
+            .then(() => res.status(200).json({ message: 'Post downvoted successfully !' }))
             .catch(error => res.status(400).json({ message: 'Post dislike failed !' }));
     }
 
     function removeDislike() {
-        Post.updateOne({ _id: postId }, { $inc: { dislikes: -1 }, $pull: { usersDisliked: userId } })
-            .then(() => res.status(200).json({ message: 'Post undisliked successfully !' }))
+        Post.updateOne({ _id: postId }, { $inc: { downvotes: -1 }, $pull: { usersDownvoted: userId } })
+            .then(() => res.status(200).json({ message: 'Removed downvote successfully !' }))
             .catch(error => res.status(400).json({ message: 'Post undislike failed !' }));
     }
 
-    switch (like) {
+    switch (vote) {
         case 1:
             Post.findOne({ _id: postId })
                 .then(post => {(
-                    userId === req.auth.userId && !post.usersLiked.includes(userId) && !post.usersDisliked.includes(userId)) ? addLike() : res.status(401).json({ message: 'Unauthorized request !' })})
+                    userId === req.auth.userId && !post.usersUpvoted.includes(userId) && !post.usersDownvoted.includes(userId)) ? addLike() : res.status(401).json({ message: 'Unable to remove the upvote !' })})
                 .catch(error => res.status(404).json({ message: 'Post not found !' }));
 
             break;
         case -1:
             Post.findOne({ _id: postId })
-                .then(post => {(userId === req.auth.userId && !post.usersLiked.includes(userId) && !post.usersDisliked.includes(userId)) ? addDislike() : res.status(401).json({ message: 'Unauthorized request !' })})
+                .then(post => {(userId === req.auth.userId && !post.usersUpvoted.includes(userId) && !post.usersDownvoted.includes(userId)) ? addDislike() : res.status(401).json({ message: 'Unable to remove the downvote !' })})
                 .catch(error => res.status(404).json({ message: 'Post not found !' }));
 
             break;
@@ -133,14 +135,14 @@ exports.likePost = (req, res) => {
             Post.findOne({ _id: postId })
                 .then(post => {
                     switch(true) {
-                        case (userId === req.auth.userId && post.usersLiked.includes(userId) && !post.usersDisliked.includes(userId)):
+                        case (userId === req.auth.userId && post.usersUpvoted.includes(userId) && !post.usersDownvoted.includes(userId)):
                             removeLike();
                             break;
-                        case (userId === req.auth.userId && !post.usersLiked.includes(userId) && post.usersDisliked.includes(userId)):
+                        case (userId === req.auth.userId && !post.usersUpvoted.includes(userId) && post.usersDownvoted.includes(userId)):
                             removeDislike();
                             break;
                         default:
-                            res.status(401).json({ message: 'Unauthorized request !' });
+                            res.status(401).json({ message: 'Unable to remove the vote !' });
                     }
                 })
                 .catch(error => res.status(404).json({ message: 'Post not found !' }));

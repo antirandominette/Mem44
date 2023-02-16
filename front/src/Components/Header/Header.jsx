@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
-    const isConnected = sessionStorage.getItem('isConnected');
+    const isConnected = localStorage.getItem('isConnected');
 
     return (
         <header className="header_container">

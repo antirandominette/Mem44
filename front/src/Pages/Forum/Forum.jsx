@@ -6,19 +6,24 @@ import "./Forum.css";
 
 function Forum() {
     const navigate = useNavigate();
-    const userToken = sessionStorage.getItem('token');
-    const userId = sessionStorage.getItem('userId');
-    const userIsConnected = sessionStorage.getItem('isConnected');
-    const [posts, setPosts] = useState([]);
-    const [vote, setVote] = useState(0);
+    const userToken = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
+    const userIsConnected = localStorage.getItem('isConnected');
 
-    /* A hook that is called when the component is mounted. Fetches all Posts in database */
+    const [posts, setPosts] = useState([]);
+
     useEffect(() => {
         if (!userIsConnected || !userToken) {
             navigate('/login');
         }
         if (userIsConnected && userToken) {
-            fetch('http://13.37.164.181:4200/api/posts/', {
+            fetchPosts();
+        }
+        // eslint-disable-next-line
+    }, []);
+
+    function fetchPosts() {
+        fetch('http://13.37.164.181:4200/api/posts/', {
                 credentials: 'same-origin',
                 method: 'GET',
                 headers: {
@@ -31,17 +36,21 @@ function Forum() {
                         throw new Error('Failed to fetch posts');
                     }
                     else {
-                        sessionStorage.setItem('isConnected', true);
+                        localStorage.setItem('isConnected', true);
                         return res.json();
                     }
                 })
                 .then(res => setPosts(res))
                 .catch(error => console.log(error));
-        }
-        // eslint-disable-next-line
-    }, []);
+    }
 
-    async function handleVote(postId, data) {
+    function handleCreatePost() {
+        navigate('/forum/create-post');
+    }
+
+    async function handleVote(postId, vote) {
+        const data = { vote: vote};
+
         await fetch(`http://13.37.164.181:4200/api/posts/${ postId }/like`, {
             method: 'POST',
             headers: {
@@ -50,50 +59,40 @@ function Forum() {
             },
             body: JSON.stringify(data)
         })
-        .then(res => { return res.json(); })
-        .then(res => console.log(res))
+        .then(res => res.json())
+        .then(() => fetchPosts())
         .catch(error => console.log(error));
     }
-
-    function handleCreatePost() {
-        navigate('/forum/create-post');
-    }
-
+    
     function handleUpvote(postId) {
-        console.log('like');
+        const singlePost = posts.find(post => post._id === postId);
 
-        if (vote === 1) {
-            setVote(0);
-
-            const data = { userId: userId, like: 0 }
-            
-            handleVote(postId, data);
-        }
-        else if (vote === 0) {
-            setVote(1);
-            
-            const data = { userId: userId, like: 1 }
-
-            handleVote(postId, data);
+        switch (true) {
+            case !singlePost.usersUpvoted.includes(userId) && !singlePost.usersDownvoted.includes(userId):
+                handleVote(postId, 1);
+                break;
+            case singlePost.usersUpvoted.includes(userId) && !singlePost.usersDownvoted.includes(userId):
+                handleVote(postId, 0);
+                break;
+            default:
+                handleVote(postId, 0);
+                break;
         }
     }
 
     function handleDownvote(postId) {
-        console.log('dislike');
+        const singlePost = posts.find(post => post._id === postId);
 
-        if(vote === -1) {
-            setVote(0);
-            
-            const data = { userId: userId, like: vote }
-    
-            handleVote(postId, data);
-        }
-        else if (vote === 0) {
-            setVote(-1);
-
-            const data = { userId: userId, like: vote }
-            
-            handleVote(postId, data);
+        switch (true) {
+            case !singlePost.usersDownvoted.includes(userId) && !singlePost.usersUpvoted.includes(userId):
+                handleVote(postId, -1);
+                break;
+            case singlePost.usersDownvoted.includes(userId) && !singlePost.usersUpvoted.includes(userId):
+                handleVote(postId, 0);
+                break;
+            default:
+                handleVote(postId, 0);
+                break;
         }
     }
 
@@ -103,7 +102,7 @@ function Forum() {
             <h2 className="forum_section_title">Campaigns</h2>
             {
                     posts.length > 0 ? (
-                        posts.sort((a, b) => (a.likes - a.dislikes) < (b.likes - b.dislikes) ? 1 : -1).map(
+                        posts.sort((a, b) => (a.upvotes - a.downvotes) < (b.upvotes - b.downvotes) ? 1 : -1).map(
                             post => (
                                 <div key={post._id} className="forum_posts_container">
                                     <div className="forum_post_container">
@@ -120,7 +119,7 @@ function Forum() {
                                     <div className="forum_post_votes_container">
                                             <svg onClick={ () => handleUpvote(post._id) } className="vote_arrow upvote" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
                                             {
-                                                <p className="forum_post_votes">{ post.likes - post.dislikes }</p>
+                                                <p className="forum_post_votes">{ post.upvotes - post.downvotes }</p>
                                             }
                                             <svg onClick={ () => handleDownvote(post._id) } className="vote_arrow downvote" fill="#000000" width="30px" height="30px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14z"/></svg>
                                     </div>

@@ -5,10 +5,10 @@ const postSchema = mongoose.Schema({
     resume: { type: String, required: true },
     duration: { type: Number, required: true },
     // imageUrl: { type: String, required: true },
-    likes: { type: Number, required: true, default: 0 },
-    dislikes: { type: Number, required: true, default: 0 },
-    usersLiked: { type: [String], required: true, default: [] },
-    usersDisliked: { type: [String], required: true, default: [] },
+    upvotes: { type: Number, required: true, default: 0 },
+    downvotes: { type: Number, required: true, default: 0 },
+    usersUpvoted: { type: [String], required: true, default: [] },
+    usersDownvoted: { type: [String], required: true, default: [] },
     userId: { type: String, required: true }
 });
 

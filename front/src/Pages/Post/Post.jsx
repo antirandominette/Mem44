@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react';
 import './Post.css';
 
 function Post() {
-    const userToken = sessionStorage.getItem('token');
-    const userIsConnected = sessionStorage.getItem('isConnected');
+    const userToken = localStorage.getItem('token');
+    const userIsConnected = localStorage.getItem('isConnected');
     const [postDetails, setPostDetails] = useState({});
     const { id } = useParams();
     const navigate = useNavigate();
@@ -26,12 +26,11 @@ function Post() {
                 .then(res => res.json())
                 .then(res => setPostDetails(res))
                 .catch(error => console.log(error));
+
         }
         // eslint-disable-next-line
     }, []);
     
-    
-
     return (
         <section className="post_section_container">
             <Header />
