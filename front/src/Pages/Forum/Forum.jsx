@@ -1,16 +1,22 @@
-import Header from "../../Components/Header/Header"; 
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+
+import Header from "../../Components/Header/Header"; 
+
+
 import "./Forum.css";
 
 
 function Forum() {
     const navigate = useNavigate();
+
+    const [posts, setPosts] = useState([]);
+
+    /* Getting the user token, user id and user is connected from local storage. */
     const userToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const userIsConnected = localStorage.getItem('isConnected');
 
-    const [posts, setPosts] = useState([]);
 
     useEffect(() => {
         if (!userIsConnected || !userToken) {
@@ -22,7 +28,7 @@ function Forum() {
         // eslint-disable-next-line
     }, []);
 
-    function fetchPosts() {
+    function fetchPosts() { // Fetch all posts
         fetch('http://13.37.164.181:4200/api/posts/', {
                 credentials: 'same-origin',
                 method: 'GET',
@@ -44,14 +50,14 @@ function Forum() {
                 .catch(error => console.log(error));
     }
 
-    function handleCreatePost() {
+    function handleCreatePost() { // Redirect to create post page
         navigate('/forum/create-post');
     }
 
-    async function handleVote(postId, vote) {
+    function postVote(postId, vote) { // Vote for a post
         const data = { vote: vote};
 
-        await fetch(`http://13.37.164.181:4200/api/posts/${ postId }/like`, {
+        fetch(`http://13.37.164.181:4200/api/posts/${ postId }/like`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + userToken,
@@ -64,34 +70,37 @@ function Forum() {
         .catch(error => console.log(error));
     }
     
-    function handleUpvote(postId) {
+    function handleUpvote(postId) { // Handle upvote
         const singlePost = posts.find(post => post._id === postId);
+        const upvoteArrow = document.querySelector('.upvote');
 
         switch (true) {
             case !singlePost.usersUpvoted.includes(userId) && !singlePost.usersDownvoted.includes(userId):
-                handleVote(postId, 1);
+                postVote(postId, 1);
+                upvoteArrow.classList.remove('upvote');
+                upvoteArrow.classList.add('upvoted');
                 break;
             case singlePost.usersUpvoted.includes(userId) && !singlePost.usersDownvoted.includes(userId):
-                handleVote(postId, 0);
+                postVote(postId, 0);
                 break;
             default:
-                handleVote(postId, 0);
+                postVote(postId, 0);
                 break;
         }
     }
 
-    function handleDownvote(postId) {
+    function handleDownvote(postId) { // Handle downvote
         const singlePost = posts.find(post => post._id === postId);
 
         switch (true) {
             case !singlePost.usersDownvoted.includes(userId) && !singlePost.usersUpvoted.includes(userId):
-                handleVote(postId, -1);
+                postVote(postId, -1);
                 break;
             case singlePost.usersDownvoted.includes(userId) && !singlePost.usersUpvoted.includes(userId):
-                handleVote(postId, 0);
+                postVote(postId, 0);
                 break;
             default:
-                handleVote(postId, 0);
+                postVote(postId, 0);
                 break;
         }
     }
