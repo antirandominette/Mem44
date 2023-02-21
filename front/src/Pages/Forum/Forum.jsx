@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 import Header from "../../Components/Header/Header"; 
 
-
 import "./Forum.css";
-
 
 function Forum() {
     const navigate = useNavigate();
@@ -16,13 +15,14 @@ function Forum() {
     const userToken = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
     const userIsConnected = localStorage.getItem('isConnected');
-
+    const decodedToken = jwt_decode(userToken);
+    const isTokenExpired = decodedToken.exp < Date.now() / 1000
 
     useEffect(() => {
-        if (!userIsConnected || !userToken) {
+        if (!userIsConnected || !userToken || isTokenExpired) {
             navigate('/login');
         }
-        if (userIsConnected && userToken) {
+        if (userIsConnected && userToken && !isTokenExpired) {
             fetchPosts();
         }
         // eslint-disable-next-line
@@ -72,13 +72,10 @@ function Forum() {
     
     function handleUpvote(postId) { // Handle upvote
         const singlePost = posts.find(post => post._id === postId);
-        const upvoteArrow = document.querySelector('.upvote');
 
         switch (true) {
             case !singlePost.usersUpvoted.includes(userId) && !singlePost.usersDownvoted.includes(userId):
                 postVote(postId, 1);
-                upvoteArrow.classList.remove('upvote');
-                upvoteArrow.classList.add('upvoted');
                 break;
             case singlePost.usersUpvoted.includes(userId) && !singlePost.usersDownvoted.includes(userId):
                 postVote(postId, 0);

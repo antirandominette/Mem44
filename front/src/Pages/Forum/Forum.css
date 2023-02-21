@@ -148,3 +148,7 @@
 .upvoted {
     fill: green;
 }
+.upvoted:hover {
+    cursor: pointer;
+    fill: var(--primary-color);
+}

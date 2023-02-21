@@ -9,6 +9,12 @@ module.exports = (req, res, next) => { // Check if the user is authenticated
 
         console.log(`Auth was called and the token was decoded successfully.\nThe user ID is: ${ userId }`);
 
+        // if user token is expired, redirect to login page
+        if (decodedToken.exp < Date.now() / 1000) {
+            console.log('Token expired');
+            res.status(401).json({ error: 'Token expired' });
+        }
+
         req.auth = { // Adding the userId to the request object.
             userId: userId
         }
@@ -16,6 +22,7 @@ module.exports = (req, res, next) => { // Check if the user is authenticated
         next();
     } 
     catch (error) {
+        console.log(`Auth was called and the token was not decoded successfully.\nError: ${ error }`);
         res.status(401).json({ error });
     }
 };

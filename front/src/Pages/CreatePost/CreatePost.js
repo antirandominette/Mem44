@@ -6,6 +6,7 @@ import './CreatePost.css';
 function CreatePost() {
     const [result, setResult] = useState();
     const [postDescriptionLength, setPostDescriptionLength] = useState();
+    const [postResumeLength, setPostResumeLength] = useState();
     const navigate = useNavigate();
 
     function handleSubmit(e) {
@@ -44,9 +45,14 @@ function CreatePost() {
         .catch(err => console.log(err))
     }
 
-    function handleChange(e) {
+    function handleDescChange(e) {
         const postDescription = e.target.value;
         setPostDescriptionLength(postDescription.length);
+    }
+
+    function handleResumeChange(e) {
+        const postResume = e.target.value;
+        setPostResumeLength(postResume.length);
     }
 
     return (
@@ -55,11 +61,14 @@ function CreatePost() {
             <h1>Create Post</h1>
             <form className='create-post-form' onSubmit={ handleSubmit }>
                 <input id="title" type="text" name="title" placeholder="Title" />
-                <textarea id="description" type="text" name="description" placeholder="Description" onChange={ handleChange } maxLength={ 5000 } />
+                <textarea id="description" type="text" name="description" placeholder="Description" onChange={ handleDescChange } maxLength={ 5000 } />
                 {
                     postDescriptionLength > 0 && <p>{ postDescriptionLength } / 5000</p>
                 }
-                <input id="resume" type="text" name="resume" placeholder="Resume" />
+                <input id="resume" type="text" name="resume" placeholder="Resume" onChange={ handleResumeChange } maxLength={ 450 } />
+                {
+                    postResumeLength > 0 && <p>{ postResumeLength } / 450</p>
+                }
                 <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
                 
                 <button className='createPostBtn' type="submit">Create Post</button>
