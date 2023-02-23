@@ -16,10 +16,13 @@ function Forum() {
     const userId = localStorage.getItem('userId');
     const userIsConnected = localStorage.getItem('isConnected');
     const decodedToken = jwt_decode(userToken);
-    const isTokenExpired = decodedToken.exp < Date.now() / 1000
+    const isTokenExpired = decodedToken.exp < Date.now() / 1000;
 
     useEffect(() => {
         if (!userIsConnected || !userToken || isTokenExpired) {
+            localStorage.setItem('isConnected', false);
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
             navigate('/login');
         }
         if (userIsConnected && userToken && !isTokenExpired) {

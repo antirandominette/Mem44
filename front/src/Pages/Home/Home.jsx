@@ -4,8 +4,6 @@ import { ReactComponent as Logo } from "../../Assets/logo.svg";
 import { useEffect } from "react";
 
 function Home() {
-    
-
     useEffect(() => {
         const logoRedPaths = document.querySelectorAll("path");
 

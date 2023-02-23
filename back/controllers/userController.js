@@ -32,7 +32,7 @@ exports.login = (req, res, next) => { // Check if the user exists in the databas
             token: jwt.sign( 
                 { userId: user._id }, 
                 `${env.SECRET_TOKEN}`, 
-                { expiresIn: '24h' } 
+                { expiresIn: '3sec' } 
             ),
         })
         console.log('User connected: ' + user._id)
