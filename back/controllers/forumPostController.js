@@ -9,7 +9,7 @@ exports.createPost = (req, res) => {
     const post = new Post({
         ...postObject,
         userId: req.auth.userId,
-        imagesIntels: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imagesIntels: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ""
     });
 
     console.log(post, req.file);
@@ -74,11 +74,19 @@ exports.deletePost = (req, res) => {
         const filename = post.imagesIntels.split('/images/')[1];
         console.log(filename);
 
-        fs.unlink(`images/${ filename }`, () => {
+        if (post.imagesIntels !== "") {
+            fs.unlink(`images/${ filename }`, () => {
+                Post.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: 'Post deleted successfully !' }))
+                    .catch(error => res.status(400).json({ message: 'Post deletion failed !', error }));
+            });
+        } else {
             Post.deleteOne({ _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Post deleted successfully !' }))
                 .catch(error => res.status(400).json({ message: 'Post deletion failed !', error }));
-        });
+        }
+
+        
     }
 
     Post.findOne({ _id: req.params.id })
