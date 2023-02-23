@@ -8,6 +8,7 @@ function CreatePost() {
     const [postDescriptionLength, setPostDescriptionLength] = useState();
     const [postResumeLength, setPostResumeLength] = useState();
     const [selectedFile, setSelectedFile] = useState();
+    const [requestResult, setRequestResult] = useState(false);
     const [previewFile, setPreviewFile] = useState({ preview: '' });
 
     const navigate = useNavigate();
@@ -31,10 +32,13 @@ function CreatePost() {
 
         Axios.post('http://13.37.164.181:4200/api/posts/', data)
             .then(res => { 
-                console.log(res) 
+                console.log(res);
                 navigate(`/forum/post/${ res.data.postId }`);
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err.response);
+                setRequestResult(err.response.data.alreadyExists);
+            })
     }
 
     function handleDescChange(e) {
@@ -77,8 +81,11 @@ function CreatePost() {
                 {
                     previewFile.preview && <img src={ previewFile.preview } alt="preview" />
                 }
-                
                 <button className='createPostBtn' type="submit">Create Post</button>
+
+                {
+                    requestResult && <p className="error-message">Post already exists</p>
+                }
             </form>
         </div>
     );

@@ -14,9 +14,16 @@ exports.createPost = (req, res) => {
 
     console.log(post, req.file);
 
-    post.save()
-        .then(() => res.status(201).json({ message: 'Post created successfully !', postId: post._id }))
-        .catch(error => res.status(400).json({ message: 'Post creation failed !', error }));
+    Post.findOne({ title: post.title }).then(postFound => {
+        if (postFound) {
+            res.status(409).json({ message: 'Post already exists !', alreadyExists: true });
+        }
+        else {
+            post.save()
+            .then(() => res.status(201).json({ message: 'Post created successfully !', postId: post._id, alreadyExists: false }))
+            .catch(error => res.status(400).json({ message: 'Post creation failed !', error }));
+        }
+    });
 };
 
 exports.modifyPost = (req, res) => {
