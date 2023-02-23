@@ -2,47 +2,39 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import './CreatePost.css';
+import Axios from 'axios';
 
 function CreatePost() {
-    const [result, setResult] = useState();
     const [postDescriptionLength, setPostDescriptionLength] = useState();
     const [postResumeLength, setPostResumeLength] = useState();
+    const [selectedFile, setSelectedFile] = useState();
+    const [previewFile, setPreviewFile] = useState({ preview: '' });
+
     const navigate = useNavigate();
 
     function handleSubmit(e) {
         e.preventDefault();
-
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         const resume = document.getElementById('resume').value;
         const duration = document.getElementById('duration').value;
-        const userId = localStorage.getItem('userId');
 
-        const data = {
-            post: {
-                title,
-                description,
-                resume,
-                duration,
-                userId,
-            }
-        }
 
-        fetch('http://13.37.164.181:4200/api/posts/',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(data),
-        })
-        .then(res => res.json())
-        .then(res => {
-            setResult(res);
-            console.log(res)
-            navigate(`/forum/post/${ res.postId }`);
-        })
-        .catch(err => console.log(err))
+        const data = new FormData();
+        data.append('title', title);
+        data.append('description', description);
+        data.append('resume', resume);
+        data.append('duration', duration);
+        data.append('file', selectedFile);
+
+        Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
+        Axios.post('http://13.37.164.181:4200/api/posts/', data)
+            .then(res => { 
+                console.log(res) 
+                navigate(`/forum/post/${ res.data.postId }`);
+            })
+            .catch(err => console.log(err))
     }
 
     function handleDescChange(e) {
@@ -53,6 +45,15 @@ function CreatePost() {
     function handleResumeChange(e) {
         const postResume = e.target.value;
         setPostResumeLength(postResume.length);
+    }
+
+    function handleFileChange(e) {
+        const file = e.target.files[0];
+        const preview = {
+            preview: URL.createObjectURL(file)
+        }
+        setSelectedFile(file);
+        setPreviewFile(preview);
     }
 
     return (
@@ -70,20 +71,15 @@ function CreatePost() {
                     postResumeLength > 0 && <p>{ postResumeLength } / 450</p>
                 }
                 <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
+
+                <input type="file" name="file" onChange={ handleFileChange } />
+
+                {
+                    previewFile.preview && <img src={ previewFile.preview } alt="preview" />
+                }
                 
                 <button className='createPostBtn' type="submit">Create Post</button>
             </form>
-
-            { 
-                result && <>
-                    <h1>{ result.message }</h1>
-                    <h2>{ result.title }</h2>
-                    <h2>{ result.description }</h2>
-                    <h2>{ result.resume }</h2>
-                    <h2>{ result.userId }</h2>
-                    <img src={ result.image } alt="post" />
-                </>
-            }
         </div>
     );
 }

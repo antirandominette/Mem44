@@ -7,7 +7,11 @@ const helmet = require("helmet"); // Helmet helps you secure your Express apps f
 const rateLimit = require("express-rate-limit"); // Express rate limit is a middleware that can be used to limit repeated requests to public APIs and/or endpoints such as password reset.
 const userRoutes = require('./routes/userRoutes');
 const forumPostRoutes = require('./routes/forumPostsRoutes');
-
+const multer = require('multer');
+const promisify = require('util').promisify;
+const pipeline = promisify(require('stream').pipeline);
+const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 const env = process.env;
@@ -38,16 +42,24 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(cors());
+
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', authLimiter, userRoutes);
 app.use('/api/posts', authLimiter, forumPostRoutes);
 
-app.get('/images', (req, res) => {
-    res.status(200).json({
-        message: 'Images fetched successfully'
-    });
+// const upload = multer();
+// app.post('/api/posts', upload.single('file'), async function (req, res) {
+//     const {
+//         file,
+//         body: { name }
+//     } = req;
 
-    console.log(__dirname);
-});
+//     const fileName = name + Math.floor(Math.random() * 1000000) + file.detectedFileExtension;
+
+//     await pipeline(file.stream, fs.createWriteStream(`${__dirname}/images/${fileName}`))
+
+//     res.send('File uploaded successfully.' + fileName);
+// });
 
 module.exports = app;

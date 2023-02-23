@@ -9,7 +9,7 @@ const MIME_TYPES = {
 
 const storage = multer.diskStorage({ // To store the image on the server
     destination: (req, file, callback) => {
-        callback(null, 'images'); // The first argument is an error, the second is the destination folder
+        callback(null, 'images/'); // The first argument is an error, the second is the destination folder
     },
     filename: (req, file, callback) => {
         const removedSpaceFromFileName = file.originalname.split(' ').join('_'); // Replace spaces with underscores
@@ -20,4 +20,4 @@ const storage = multer.diskStorage({ // To store the image on the server
     }
 });
 
-module.exports = multer({ storage: storage }).single('image'); // multer expects a single file with the name 'image'
+module.exports = multer({ storage: storage }).single('file'); // multer expects a single file with the name 'image'

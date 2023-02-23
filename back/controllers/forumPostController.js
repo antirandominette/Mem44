@@ -2,15 +2,18 @@ const Post = require('../models/forumPostModel');
 const fs = require('fs');
 
 exports.createPost = (req, res) => {
-    console.log(req.body.post);
-    const postObject = req.body.post;
+    console.log(req.body);
+    const postObject = req.body;
+    const file = req.file;
+    console.log(file);
 
     delete postObject._id;
+
 
     const post = new Post({
         ...postObject,
         userId: req.auth.userId,
-        // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imagesIntels: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
 
     console.log(post);
