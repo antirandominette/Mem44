@@ -2,13 +2,9 @@ const Post = require('../models/forumPostModel');
 const fs = require('fs');
 
 exports.createPost = (req, res) => {
-    console.log(req.body);
     const postObject = req.body;
-    const file = req.file;
-    console.log(file);
 
     delete postObject._id;
-
 
     const post = new Post({
         ...postObject,
@@ -16,11 +12,11 @@ exports.createPost = (req, res) => {
         imagesIntels: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
 
-    console.log(post);
+    console.log(post, req.file);
 
     post.save()
         .then(() => res.status(201).json({ message: 'Post created successfully !', postId: post._id }))
-        .catch(error => res.status(400).json({ message: 'Post creation failed !' }));
+        .catch(error => res.status(400).json({ message: 'Post creation failed !', error }));
 };
 
 exports.modifyPost = (req, res) => {
@@ -75,18 +71,19 @@ exports.getOnePost = (req, res) => {
 
 exports.deletePost = (req, res) => {
     function deletePost(post) {
-        const filename = post.imageUrl.split('/images/')[1];
+        const filename = post.imagesIntels.split('/images/')[1];
+        console.log(filename);
 
         fs.unlink(`images/${ filename }`, () => {
             Post.deleteOne({ _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Post deleted successfully !' }))
-                .catch(error => res.status(400).json({ message: 'Post deletion failed !' }));
+                .catch(error => res.status(400).json({ message: 'Post deletion failed !', error }));
         });
     }
 
     Post.findOne({ _id: req.params.id })
         .then(post => { post.userId != req.auth.userId ? res.status(401).json({ message: 'Unauthorized request !' }) : deletePost(post) })
-        .catch(error => res.status(404).json({ message: 'Post not found !' }));
+        .catch(error => res.status(404).json({ message: 'Post not found !', error }));
 };
 
 exports.likePost = (req, res) => {
