@@ -80,25 +80,17 @@ exports.getOnePost = (req, res) => {
 
 exports.deletePost = (req, res) => {
     function deletePost(post) {
-        const filename = post.imagesIntels.split('/images/')[1];
-        console.log(filename);
-
-        if (post.imagesIntels !== "") {
-            fs.unlink(`images/${ filename }`, () => {
-                Post.deleteOne({ _id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Post deleted successfully !' }))
-                    .catch(error => res.status(400).json({ message: 'Post deletion failed !', error }));
+        if (post.files.length > 0) {
+            post.files.forEach(file => {
+                const filename = file.split('/images/')[1];
+                fs.unlink(`images/${ filename }`, () => {});
             });
-        } else {
-            Post.deleteOne({ _id: req.params.id })
-                .then(() => res.status(200).json({ message: 'Post deleted successfully !' }))
-                .catch(error => res.status(400).json({ message: 'Post deletion failed !', error }));
         }
 
-        
+        Post.deleteOne({ _id: req.params.id })
+            .then(() => res.status(200).json({ message: 'Post deleted successfully !' }))
+            .catch(error => res.status(400).json({ message: 'Post deletion failed !' }));
     }
-
-    console.log(req);
 
     Post.findOne({ _id: req.params.id })
         .then(post => { post.userId != req.auth.userId ? res.status(401).json({ message: 'Unauthorized request !' }) : deletePost(post) })
