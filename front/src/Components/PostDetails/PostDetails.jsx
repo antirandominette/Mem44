@@ -1,13 +1,12 @@
 import jquery from 'jquery';
 import "./PostDetails.css";
 import { useNavigate } from 'react-router-dom';
-import { Document, Page, pdfjs } from 'react-pdf';
+import { Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 import Axios from 'axios';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function PostDetails({ post }) {
     const navigate = useNavigate();
