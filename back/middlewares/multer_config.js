@@ -20,4 +20,4 @@ const storage = multer.diskStorage({ // To store the image on the server
     }
 });
 
-module.exports = multer({ storage: storage }).single('file'); // multer expects a single file with the name 'image'
+module.exports = multer({ storage: storage }).any('files'); // multer expects a single file with the name 'image'

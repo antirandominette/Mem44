@@ -9,6 +9,7 @@ function PostDetails({ post }) {
 
     function deletePost() {
         Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+        
         Axios.delete(`http:////13.37.164.181:4200/api/posts/${ post._id }`)
             .then(response => {
                 console.log(response);
@@ -25,7 +26,16 @@ function PostDetails({ post }) {
                 <div className="post_details_content">
                     <h2 className="post_details_title">{ post.title }</h2>
                     <p className="post_details_description">Details : { post.description }</p>
-                    <img className="post_details_image" src={ post.imagesIntels } alt="post_image" />
+
+                    {
+                        post.files.map((imageIntel, index) => {
+                            return (
+                                <div className="post_details_image_intel" key={ index }>
+                                    <img className="post_details_image_intel_image" src={ imageIntel } alt={ imageIntel } />
+                                </div>
+                            )
+                        })
+                    }
                 </div>
                 {/* delete button */}
                 <button className="post_details_delete_button" onClick={ deletePost }>Delete</button>

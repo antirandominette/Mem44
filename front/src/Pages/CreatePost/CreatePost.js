@@ -7,9 +7,11 @@ import Axios from 'axios';
 function CreatePost() {
     const [postDescriptionLength, setPostDescriptionLength] = useState();
     const [postResumeLength, setPostResumeLength] = useState();
-    const [selectedFile, setSelectedFile] = useState();
+    const [selectedFile, setSelectedFile] = useState([]);
     const [requestResult, setRequestResult] = useState(false);
-    const [previewFile, setPreviewFile] = useState({ preview: '' });
+    const [previewFile, setPreviewFile] = useState([]);
+    const previewFiles = [];
+    const selectedFiles = [];
 
     const navigate = useNavigate();
 
@@ -20,14 +22,18 @@ function CreatePost() {
         const resume = document.getElementById('resume').value;
         const duration = document.getElementById('duration').value;
 
-
         const data = new FormData();
         data.append('title', title);
         data.append('description', description);
         data.append('resume', resume);
         data.append('duration', duration);
-        data.append('file', selectedFile);
 
+        if (selectedFile.length !== 0) {
+            for (const single_file of selectedFile) {
+                data.append('files', single_file)
+            }
+        }
+        
         Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
         Axios.post('http://13.37.164.181:4200/api/posts/', data)
@@ -52,12 +58,24 @@ function CreatePost() {
     }
 
     function handleFileChange(e) {
-        const file = e.target.files[0];
-        const preview = {
-            preview: URL.createObjectURL(file)
+        const files = e.target.files;
+
+        for (const file of files) {
+            const preview = {
+                preview: URL.createObjectURL(file)
+            }
+
+            previewFiles.push(preview);
+            // console.log(previewFiles);
         }
-        setSelectedFile(file);
-        setPreviewFile(preview);
+
+        for (const file of files) {
+            selectedFiles.push(file);
+            // console.log(selectedFiles);
+        }
+
+        setPreviewFile(previewFiles);
+        setSelectedFile(files);
     }
 
     return (
@@ -76,11 +94,18 @@ function CreatePost() {
                 }
                 <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
 
-                <input type="file" name="file" onChange={ handleFileChange } />
+                <input type="file" name="file" onChange={ handleFileChange } multiple />
 
                 {
-                    previewFile.preview && <img src={ previewFile.preview } alt="preview" />
+                    previewFile.map((file, index) => {
+                        return (
+                            <div key={ index }>
+                                <img src={ file.preview } alt="preview" />
+                            </div>
+                        )
+                    })
                 }
+
                 <button className='createPostBtn' type="submit">Create Post</button>
 
                 {

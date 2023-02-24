@@ -4,7 +4,7 @@ const postSchema = mongoose.Schema({
     description: { type: String, required: true },
     resume: { type: String, required: true },
     duration: { type: Number, required: true },
-    imagesIntels: { type: String, required: false },
+    files: { type: [String], required: false },
     upvotes: { type: Number, required: true, default: 0 },
     downvotes: { type: Number, required: true, default: 0 },
     usersUpvoted: { type: [String], required: true, default: [] },

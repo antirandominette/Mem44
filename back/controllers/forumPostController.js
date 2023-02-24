@@ -3,16 +3,18 @@ const fs = require('fs');
 
 exports.createPost = (req, res) => {
     const postObject = req.body;
+    const files = req.files;
+    console.log(files);
 
     delete postObject._id;
 
     const post = new Post({
         ...postObject,
         userId: req.auth.userId,
-        imagesIntels: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : ""
+        files: req.files ? files.map(file => `${req.protocol}://${req.get('host')}/images/${file.filename}`) : []
     });
 
-    console.log(post, req.file);
+    console.log(post, req.body.files);
 
     Post.findOne({ title: post.title }).then(postFound => {
         if (postFound) {
@@ -95,6 +97,8 @@ exports.deletePost = (req, res) => {
 
         
     }
+
+    console.log(req);
 
     Post.findOne({ _id: req.params.id })
         .then(post => { post.userId != req.auth.userId ? res.status(401).json({ message: 'Unauthorized request !' }) : deletePost(post) })
