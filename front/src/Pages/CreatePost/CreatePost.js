@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import './CreatePost.css';
 import Axios from 'axios';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 function CreatePost() {
     const [postDescriptionLength, setPostDescriptionLength] = useState();
@@ -11,7 +14,6 @@ function CreatePost() {
     const [requestResult, setRequestResult] = useState(false);
     const [previewFile, setPreviewFile] = useState([]);
     const previewFiles = [];
-    const selectedFiles = [];
 
     const navigate = useNavigate();
 
@@ -62,16 +64,11 @@ function CreatePost() {
 
         for (const file of files) {
             const preview = {
-                preview: URL.createObjectURL(file)
+                preview: URL.createObjectURL(file),
+                data: file
             }
 
             previewFiles.push(preview);
-            // console.log(previewFiles);
-        }
-
-        for (const file of files) {
-            selectedFiles.push(file);
-            // console.log(selectedFiles);
         }
 
         setPreviewFile(previewFiles);
@@ -95,16 +92,23 @@ function CreatePost() {
                 <input id="duration" type="number" name="duration" placeholder="duration in weeks" />
 
                 <input type="file" name="file" onChange={ handleFileChange } multiple />
+                <div>
 
                 {
-                    previewFile.map((file, index) => {
-                        return (
-                            <div key={ index }>
-                                <img src={ file.preview } alt="preview" />
-                            </div>
-                        )
+                    previewFile.map((file) => {
+                        if(file.data.name.endsWith('.pdf')) {
+                            return (
+                                    <Document file={ file.preview } key={ file.preview }>
+                                        <Page pageNumber={ 1 } />
+                                    </Document>
+                            )
+                        } else {
+                            return (
+                                <img src={ file.preview } alt="preview" key={ file.preview } />
+                        )}
                     })
                 }
+                </div>
 
                 <button className='createPostBtn' type="submit">Create Post</button>
 

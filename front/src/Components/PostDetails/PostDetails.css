@@ -37,3 +37,17 @@
 
     color: var(--secondary-color);
 }
+
+.post_details_files_container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.post_details_file {
+    width: 150px;
+    height: 250px;
+
+    object-fit: cover;
+    margin-right: 1%;
+}

@@ -1,8 +1,13 @@
 import jquery from 'jquery';
 import "./PostDetails.css";
 import { useNavigate } from 'react-router-dom';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 import Axios from 'axios';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function PostDetails({ post }) {
     const navigate = useNavigate();
@@ -26,16 +31,18 @@ function PostDetails({ post }) {
                 <div className="post_details_content">
                     <h2 className="post_details_title">{ post.title }</h2>
                     <p className="post_details_description">Details : { post.description }</p>
+                    <div className="post_details_files_container">
+                        {
+                            post.files.map((file, index) => {
+                                return (
+                                    <Document file={ file } key={ file } >
+                                        <Page pageNumber={ 1 } width={ 500 } />
+                                    </Document>
+                                )
+                            })
+                        }
+                    </div>
 
-                    {
-                        post.files.map((imageIntel, index) => {
-                            return (
-                                <div className="post_details_image_intel" key={ index }>
-                                    <img className="post_details_image_intel_image" src={ imageIntel } alt={ imageIntel } />
-                                </div>
-                            )
-                        })
-                    }
                 </div>
                 {/* delete button */}
                 <button className="post_details_delete_button" onClick={ deletePost }>Delete</button>
