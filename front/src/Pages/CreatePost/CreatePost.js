@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../../Components/Header/Header';
 import './CreatePost.css';
 import Axios from 'axios';
-import { Document, Page } from 'react-pdf';
+import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 function CreatePost() {
     const [postDescriptionLength, setPostDescriptionLength] = useState();
@@ -35,18 +37,23 @@ function CreatePost() {
                 data.append('files', single_file)
             }
         }
-        
-        Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
 
-        Axios.post('http://13.37.164.181:4200/api/posts/', data)
-            .then(res => { 
-                console.log(res);
-                navigate(`/forum/post/${ res.data.postId }`);
-            })
-            .catch(err => {
-                console.log(err.response);
-                setRequestResult(err.response.data.alreadyExists);
-            })
+        // check if all fields are filled
+        if (title === '' || description === '' || resume === '' || duration === '') {
+            return;
+        } else {
+            Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+
+            Axios.post('http://13.37.164.181:4200/api/posts/', data)
+                .then(res => { 
+                    console.log(res);
+                    navigate(`/forum/post/${ res.data.postId }`);
+                })
+                .catch(err => {
+                    console.log(err.response);
+                    setRequestResult(err.response.data.alreadyExists);
+                })
+        }
     }
 
     function handleDescChange(e) {

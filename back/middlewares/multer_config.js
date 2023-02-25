@@ -4,7 +4,8 @@ const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png',
-    'image/webp': 'webp'
+    'image/webp': 'webp',
+    'application/pdf': 'pdf'
 }
 
 const storage = multer.diskStorage({ // To store the image on the server

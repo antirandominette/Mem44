@@ -19,6 +19,8 @@
     height: 500px;
 
     transform: scale(2);
+
+    z-index: -1;
 }
 
 .upper_content_title {
