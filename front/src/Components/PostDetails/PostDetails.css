@@ -51,3 +51,7 @@
     object-fit: cover;
     margin-right: 1%;
 }
+
+.react-pdf__Page__canvas {
+    border-radius: 15px;
+}

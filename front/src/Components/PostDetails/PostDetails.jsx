@@ -1,5 +1,6 @@
 import jquery from 'jquery';
 import "./PostDetails.css";
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Document, Page } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
@@ -10,6 +11,8 @@ import Axios from 'axios';
 
 function PostDetails({ post }) {
     const navigate = useNavigate();
+    const [currentIndex, setCurrentIndex] = useState(0);
+
 
     function deletePost() {
         Axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('token');
@@ -32,9 +35,9 @@ function PostDetails({ post }) {
                     <p className="post_details_description">Details : { post.description }</p>
                     <div className="post_details_files_container">
                         {
-                            post.files.map((file, index) => {
+                            post.files.map((file) => {
                                 return (
-                                    <Document file={ file } key={ file } >
+                                    <Document loading="Loading File" file={ file } key={ file } >
                                         <Page pageNumber={ 1 } width={ 500 } />
                                     </Document>
                                 )
@@ -43,7 +46,7 @@ function PostDetails({ post }) {
                     </div>
 
                 </div>
-                {/* delete button */}
+
                 <button className="post_details_delete_button" onClick={ deletePost }>Delete</button>
             </section>
         )
