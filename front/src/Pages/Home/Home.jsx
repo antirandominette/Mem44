@@ -1,24 +1,35 @@
 import "./Home.css"
 import Header from "../../Components/Header/Header";
 import { ReactComponent as Logo } from "../../Assets/logo.svg";
+import { ReactComponent as LogoDev } from "../../Assets/logo_dev.svg";
 import { useEffect } from "react";
 
 function Home() {
     useEffect(() => {
-        const logoRedPaths = document.querySelectorAll("path");
+        const logoPaths = document.querySelectorAll("path");
+        const logoLetters = document.querySelectorAll("g");
 
-        logoRedPaths.forEach((path) => {
-            if (path.getAttribute("fill") === "#ffffff") {
-                path.style.fill = "#9aa6a7";
+        logoPaths.forEach((path) => {
+            if (path.getAttribute("fill") === "#4d6051") {
+                path.style.fill = "#acb5a3";
             }
         });
+
+        logoLetters.forEach((letter) => {
+            if (letter.getAttribute("fill") === "#4d6051") {
+                letter.style.fill = "#acb5a3";
+            }
+        }
+        );
     }, []);
+
 
     return (
         <section className="home_section">
             <Header />
             <div className="upper_content">
                 <Logo />
+                <LogoDev className="logodev" />
 
                 <h1 className="upper_content_title">Memoir '44 - Frontline</h1>
 
