@@ -9,7 +9,8 @@ const postSchema = mongoose.Schema({
     downvotes: { type: Number, required: true, default: 0 },
     usersUpvoted: { type: [String], required: true, default: [] },
     usersDownvoted: { type: [String], required: true, default: [] },
-    userId: { type: String, required: true }
+    userId: { type: String, required: true },
+    comments: { type: [Object], required: false, default: [] },
 });
 
 module.exports = mongoose.model('Post', postSchema);

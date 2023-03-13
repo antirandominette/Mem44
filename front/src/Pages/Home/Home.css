@@ -2,9 +2,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
 
     width: 100%;
+    height: 100vh;
+    /* background-image: url('../../Assets/mm_desktop05.jpeg'); */
+    background-image: url('../../Assets/53407643_2082952711998079_6858641203492028416_n.jpeg');
+    background-size: cover;
+    background-position-y: 20%;
 }
 
 .upper_content {
@@ -18,9 +23,10 @@
     width: 500px;
     height: 500px;
 
-    transform: scale(2);
 
-    z-index: -1;
+    /* z-index: -1; */
+
+    overflow: hidden;
 }
 
 .upper_content_title {

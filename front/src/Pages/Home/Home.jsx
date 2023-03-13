@@ -20,10 +20,10 @@ function Home() {
             <div className="upper_content">
                 <Logo />
 
-                <h1 className="upper_content_title">Website_Name</h1>
+                <h1 className="upper_content_title">Memoir '44 - Frontline</h1>
 
                 <p className="upper_content_description">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, consequatur dolore consequuntur beatae reiciendis dignissimos sapiente asperiores suscipit quod rem tempora numquam nam pariatur assumenda nesciunt minus? Fugit, est voluptatem. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat dolorem sed maxime eligendi. Nisi numquam autem dolores atque obcaecati? Atque quasi dolorum nihil natus iste doloremque aspernatur praesentium error sit.
+                Welcome to Memoir '44 - Frontline, the online community for Memoir '44 fans! Here, you can share your campaigns, chat with other players in real time, and organize events. We are dedicated to providing a user-friendly platform for Memoir '44 players, offering features such as discussion forums, live chat, event calendars and more. Whether you're a Memoir '44 veteran or a new player, we hope you'll find a vibrant community here to engage with fellow passionate gamers. Join us today and discover all that Memoir '44 - Frontline has to offer!
                 </p>
             </div>
         </section>
