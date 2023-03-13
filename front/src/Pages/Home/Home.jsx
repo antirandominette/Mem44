@@ -1,7 +1,7 @@
 import "./Home.css"
 import Header from "../../Components/Header/Header";
-import { ReactComponent as Logo } from "../../Assets/logo.svg";
-import { ReactComponent as LogoDev } from "../../Assets/logo_dev.svg";
+import { ReactComponent as Logo } from "../../Assets/tst.svg";
+import { ReactComponent as LogoDev } from "../../Assets/proton.svg";
 import { useEffect } from "react";
 
 function Home() {

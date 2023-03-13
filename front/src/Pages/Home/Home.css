@@ -27,15 +27,14 @@
     /* z-index: -1; */
 
     position: absolute;
-    bottom: 2%;
+    bottom: 1%;
     right: 0;
-    scale: 2;
 }
 
 .logodev {
     bottom: -1% !important;
     left: 0 !important;
-    scale: 1 !important;
+    scale: .8 !important;
 }
 
 .upper_content_title {
