@@ -17,7 +17,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 5%;
 }
 .upper_content svg {
     width: 250px;
@@ -32,9 +31,10 @@
 }
 
 .logodev {
-    bottom: -1% !important;
+    bottom: 0% !important;
     left: 0 !important;
     scale: .8 !important;
+    height: 200px !important;
 }
 
 .upper_content_title {
